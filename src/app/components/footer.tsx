@@ -1,5 +1,6 @@
 import React from 'react';
-import { Mail, MapPin, Phone } from 'lucide-react';
+import Link from 'next/link';
+import { Mail, Phone } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -37,12 +38,12 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="text-lg font-bold mb-4">Enlaces Rápidos</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors text-sm">Inicio</a></li>
-              <li style={{margin: "8px 0px 0px"}}><a href="/category/feminismo" className="text-gray-300 hover:text-white transition-colors text-sm">Feminismo</a></li>
-              <li style={{margin: "8px 0px 0px"}}><a href="/category/internacional" className="text-gray-300 hover:text-white transition-colors text-sm">Internacional</a></li>
-              <li style={{margin: "8px 0px 0px"}}><a href="/category/medio%20ambiente" className="text-gray-300 hover:text-white transition-colors text-sm">Medio ambiente</a></li>
-              <li style={{margin: "8px 0px 0px"}}><a href="/category/nacional" className="text-gray-300 hover:text-white transition-colors text-sm">Nacional</a></li>
-              <li style={{margin: "8px 0px 0px"}}><a href="/category/teoria" className="text-gray-300 hover:text-white transition-colors text-sm">Teoria</a></li>
+              <li><Link href="/" className="text-gray-300 hover:text-white transition-colors text-sm">Inicio</Link></li>
+              <li style={{margin: "8px 0px 0px"}}><Link href="/category/feminismo" className="text-gray-300 hover:text-white transition-colors text-sm">Feminismo</Link></li>
+              <li style={{margin: "8px 0px 0px"}}><Link href="/category/internacional" className="text-gray-300 hover:text-white transition-colors text-sm">Internacional</Link></li>
+              <li style={{margin: "8px 0px 0px"}}><Link href="/category/medio%20ambiente" className="text-gray-300 hover:text-white transition-colors text-sm">Medio ambiente</Link></li>
+              <li style={{margin: "8px 0px 0px"}}><Link href="/category/nacional" className="text-gray-300 hover:text-white transition-colors text-sm">Nacional</Link></li>
+              <li style={{margin: "8px 0px 0px"}}><Link href="/category/teoria" className="text-gray-300 hover:text-white transition-colors text-sm">Teoria</Link></li>
             </ul>
           </div>
           

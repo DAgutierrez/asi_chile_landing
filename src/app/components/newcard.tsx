@@ -20,16 +20,15 @@ const NewCard: React.FC<NewsCardProps> = ({ article, compact = false }) => {
       }`}
     >
       {/* Image */}
-      <div className={compact ? 'w-1/3 flex-shrink-0' : 'w-full'}>
-        <img
+      <div className={`relative ${compact ? 'w-1/3 flex-shrink-0' : 'w-full'} ${compact ? 'h-32' : 'h-48'}`}>
+        <Image
           src={
             article.image_url ||
             'https://images.pexels.com/photos/518543/pexels-photo-518543.jpeg'
           }
           alt={article.title}
-          width={400}
-          height={300}
-          className={`w-full h-full object-cover ${compact ? 'h-32' : 'h-48'}`}
+          fill
+          className="object-cover"
         />
       </div>
 

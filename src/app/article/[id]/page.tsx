@@ -1,4 +1,5 @@
 export const dynamic = 'force-dynamic';
+import Image from 'next/image';
 import { supabase } from '../../../../lib/supabaseClient';
 import { User, Clock } from 'lucide-react';
 import { getCategories } from '../../data/newsdata'; 
@@ -110,12 +111,12 @@ export default async function ArticlePage({ params }: RouteProps) {
       </header>
 
       {data.image_url && (
-        <figure className="mb-8">
-          {/* Usas tu transformador a PNG/JPG */}
-          <img
-            src={`${process.env.NEXT_PUBLIC_SITE_URL}/api/og?id=${id}`}
+        <figure className="mb-8 relative w-full h-[400px]">
+          <Image
+            src={`/api/og?id=${id}`}
             alt={data.title}
-            className="w-full h-[400px] object-cover rounded-lg"
+            fill
+            className="object-cover rounded-lg"
           />
         </figure>
       )}

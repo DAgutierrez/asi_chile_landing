@@ -5,6 +5,7 @@ import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import NewCard from './newcard';
 import { getNewsByCategory } from '../data/newsdata';
+import type { Article } from '../types';
 
 
 interface NewsSectionProps {
@@ -21,7 +22,7 @@ const NewSection: React.FC<NewsSectionProps> = ({
   className = '',
 }) => {
   const [visibleItems, setVisibleItems] = useState(compact ? 3 : 6);
-  const [news, setNews] = useState<any[]>([]);
+  const [news, setNews] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

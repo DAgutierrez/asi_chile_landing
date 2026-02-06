@@ -25,7 +25,7 @@ export default async function TestPage() {
 
   return (
     <div>
-      <h1>📊 Datos de la tabla "category"</h1>
+      <h1>📊 Datos de la tabla &quot;category&quot;</h1>
       <table border={1} cellPadding={8} style={{ borderCollapse: "collapse" }}>
         <thead>
           <tr>

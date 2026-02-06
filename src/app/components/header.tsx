@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import { Menu, Search, X, ChevronDown } from 'lucide-react';
@@ -75,12 +76,13 @@ export default function Header(){
                     style={{ height: '150px' }}> 
                     {/* Logo */}
                     <div className="flex items-center">
-                        <Link href="/"> 
-                            <img
-                            src="https://grace-services.s3.us-east-1.amazonaws.com/images-landings/alternativa-socialista/logo.jpeg"
-                            alt="Alternativa Socialista"
-                            className="h-12 w-auto"
-                            style={{ width: '500px', height: 'auto' }}
+                        <Link href="/">
+                            <Image
+                              src="https://grace-services.s3.us-east-1.amazonaws.com/images-landings/alternativa-socialista/logo.jpeg"
+                              alt="Alternativa Socialista"
+                              width={500}
+                              height={48}
+                              className="h-12 w-auto"
                             />
                         </Link>
                     </div>

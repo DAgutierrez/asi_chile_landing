@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 export const dynamic = 'force-dynamic';
 import Header from "./components/header";
-import Link from 'next/link';
-import { ReactNode } from 'react';
 import "./globals.css";
 import { Playfair_Display, Source_Sans_3 } from "next/font/google";
 import "tailwindcss";
-import HomePage from "./page";
 import Footer from "./components/footer";
 import WhatsAppButton from "./components/WhatsAppButton";
 import ThemeToggle from "./components/ThemeToggle";
@@ -15,16 +11,6 @@ import ThemeToggle from "./components/ThemeToggle";
 
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
 const sourceSans = Source_Sans_3({ subsets: ["latin"], variable: "--font-source-sans" });
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "NewsFlash - Últimas Noticias",

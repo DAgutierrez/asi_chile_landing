@@ -72,13 +72,12 @@ const FeaturedNews: React.FC = () => {
             
             {/* Imagen con next/image */}
             <div className="relative w-full h-full">
-                
-              <img
-                src={item.image_url || 
+              <Image
+                src={item.image_url ||
                     'https://images.pexels.com/photos/518543/pexels-photo-518543.jpeg'}
                 alt={item.title}
-                
-                className=" w-full h-full object-cover"
+                fill
+                className="w-full h-full object-cover"
               />
             </div>
 
