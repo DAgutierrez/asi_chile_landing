@@ -21,7 +21,7 @@ export const metadata: Metadata = {
       "Entregando las últimas noticias y actualizaciones de todo el mundo. Mantente informado con nuestra cobertura integral.",
     images: [
       {
-        url: "https://69f7cd84c905.ngrok-free.app/ico.ico",
+        url: "https://alternativasocialista.cl/ico.ico",
         width: 1200,
         height: 630,
         alt: "Imagen de portada",
