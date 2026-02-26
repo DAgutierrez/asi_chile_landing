@@ -1,60 +1,85 @@
-export const dynamic = 'force-dynamic';
-import Image from 'next/image';
-import { supabase } from '../../../../lib/supabaseClient';
-import { User, Clock } from 'lucide-react';
-import { getCategories } from '../../data/newsdata'; 
+export const dynamic = "force-dynamic";
 
-interface RouteProps {
-  params: Promise<{ id: string }>; // <- si tu runtime lo pide como Promise
+import type { Metadata } from "next";
+import { headers } from "next/headers";
+import Image from "next/image";
+import { supabase } from "../../../../lib/supabaseClient";
+import { User, Clock } from "lucide-react";
+import { getCategories } from "../../data/newsdata";
+
+type RouteProps = {
+  // Next normalmente entrega params como objeto, pero lo soportamos si te llega Promise
+  params: { id: string } | Promise<{ id: string }>;
+};
+
+async function getId(params: RouteProps["params"]) {
+  const resolved = await Promise.resolve(params);
+  return resolved.id;
 }
 
 // --- METADATA ---
-export async function generateMetadata({ params }: RouteProps) {
-  const { id } = await params;
+export async function generateMetadata({ params }: RouteProps): Promise<Metadata> {
+  const id = await getId(params);
 
   const { data, error } = await supabase
-    .from('news')
-    .select('title, content, image_url, created_at')
-    .eq('id', id) // fuerza a número si tu id es int en DB
+    .from("news")
+    .select("title, content, excerpt")
+    .eq("id", id)
     .single();
 
   if (error || !data) {
     return {
-      title: 'Noticia no encontrada',
-      description: 'No existe la noticia solicitada',
+      title: "Noticia no encontrada",
+      description: "No existe la noticia solicitada",
     };
   }
 
-  const ogImageUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/api/og?id=${id}`;
+  const title = data.title;
+  const description = (data.excerpt ?? data.content ?? "").slice(0, 150);
+
+  // ✅ En tu setup, headers() es async
+  const h = await headers();
+  const host = h.get("x-forwarded-host") ?? h.get("host");
+  const proto = h.get("x-forwarded-proto") ?? "https";
+  const baseUrl = host ? `${proto}://${host}` : "https://alternativasocialista.cl";
+
+  const ogImageUrl = `${baseUrl}/api/og?id=${encodeURIComponent(id)}`;
+  const articleUrl = `${baseUrl}/article/${encodeURIComponent(id)}`;
 
   return {
-    title: data.title,
-    description: data.content?.slice(0, 150) ?? '',
+    title,
+    description,
+    metadataBase: new URL(baseUrl),
     openGraph: {
-      title: data.title,
-      description: data.content?.slice(0, 150) ?? '',
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/og?id=${id}`,
+      title,
+      description,
+      url: articleUrl,
+      type: "article",
       images: [{ url: ogImageUrl, width: 1200, height: 630 }],
-      type: 'article',
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImageUrl],
     },
   };
 }
 
 // --- PAGE ---
 export default async function ArticlePage({ params }: RouteProps) {
-  const { id } = await params;
+  const id = await getId(params);
 
-  // 1) Trae el artículo base (sin relaciones)
   const { data, error } = await supabase
-    .from('news')
+    .from("news")
     .select(
-      'id, title, excerpt, content, image_url, created_at, published_at, category_id, client_id'
+      "id, title, excerpt, content, image_url, created_at, published_at, category_id, client_id"
     )
-    .eq('id', id)
+    .eq("id", id)
     .single();
 
   if (error || !data) {
-    console.error('Error cargando artículo:', error);
+    console.error("Error cargando artículo:", error);
     return (
       <div className="text-center py-12">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">
@@ -67,25 +92,23 @@ export default async function ArticlePage({ params }: RouteProps) {
     );
   }
 
-  // 2) 
-
   const categories = await getCategories();
-  const category = categories.find(cat => cat.id === data.category_id);
-  const categoryName = category?.name ?? 'Sin categoría';
-  
-  let clientName = 'Anónimo';
+  const category = categories.find((cat) => cat.id === data.category_id);
+  const categoryName = category?.name ?? "Sin categoría";
+
+  let clientName = "Anónimo";
   if (data.client_id) {
     const { data: client } = await supabase
-      .from('clients')
-      .select('id, name')
-      .eq('id', data.client_id)
+      .from("clients")
+      .select("id, name")
+      .eq("id", data.client_id)
       .single();
-    clientName = client?.name ?? 'Anónimo';
+    clientName = client?.name ?? "Anónimo";
   }
 
   const displayDate = new Date(
     data.published_at || data.created_at
-  ).toLocaleDateString('es-ES');
+  ).toLocaleDateString("es-ES");
 
   return (
     <article className="max-w-4xl mx-auto px-4">
@@ -110,10 +133,11 @@ export default async function ArticlePage({ params }: RouteProps) {
         </div>
       </header>
 
+      {/* ✅ IMAGEN REAL DEL ARTÍCULO */}
       {data.image_url && (
         <figure className="mb-8 relative w-full h-[400px]">
           <Image
-            src={`/api/og?id=${id}`}
+            src={data.image_url}
             alt={data.title}
             fill
             className="object-cover rounded-lg"
@@ -134,7 +158,6 @@ export default async function ArticlePage({ params }: RouteProps) {
           </p>
         ))}
       </div>
-
     </article>
   );
 }

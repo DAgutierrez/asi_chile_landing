@@ -16,6 +16,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "content.nationalgeographic.com.es", pathname: "/**" },
       { protocol: "https", hostname: "lamarejada.cl", pathname: "/**" },
       { protocol: "https", hostname: "vlbdporkjtogegumkgnk.supabase.co", pathname: "/storage/v1/object/**" },
+      { protocol: "https", hostname: "alternativasocialista.cl", pathname: "/api/og" },
 
     ],
   },
